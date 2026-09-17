@@ -16,8 +16,8 @@ It has one simple job, every 15 minutes:
 
 - Radarr/Sonarr + qBittorrent
 - In qBittorrent, turn on "Bypass authentication for clients on localhost" (Settings > WebUI). The doctor talks to qBittorrent without a login, so it needs this.
-- Python 3.10 or newer (no extra packages needed)
-
+- Python 3.10 or newer
+  
 ## Install
 
 ```bash
