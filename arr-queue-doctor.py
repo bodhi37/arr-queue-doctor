@@ -330,8 +330,6 @@ def main() -> int:
                 for tag in (torrent.get("tags") or "").split(",")
                 if tag.strip()
             }
-            if torrent_tags & SKIP_TAGS:
-                continue
             age = now - int(torrent.get("added_on") or now)
             stale_metadata = torrent.get("state") == "metaDL" and age >= META_TIMEOUT
             stale_payload = (
@@ -339,14 +337,22 @@ def main() -> int:
                 and float(torrent.get("progress") or 0) <= 0.001
                 and age >= STALL_TIMEOUT
             )
+            # Content safety is checked first and is never skipped by tags:
+            # a fake/unsafe payload will never import, so no router hold or
+            # manual tag should protect it. Stale-download judgments below
+            # still respect SKIP_TAGS to avoid fighting the router.
             payload_reason = None
             if float(torrent.get("progress") or 0) >= 1:
                 payload_reason = unsafe_payload(download_id)
-            if stale_metadata or stale_payload or payload_reason:
-                reason = payload_reason or (
-                    "stale_metadata" if stale_metadata else "stale_payload"
-                )
-                candidates.append((age, arr, records, torrent, reason))
+            if payload_reason:
+                reason = payload_reason
+            elif torrent_tags & SKIP_TAGS:
+                continue
+            elif stale_metadata or stale_payload:
+                reason = "stale_metadata" if stale_metadata else "stale_payload"
+            else:
+                continue
+            candidates.append((age, arr, records, torrent, reason))
 
     recovered = 0
     for _, arr, records, torrent, reason in sorted(

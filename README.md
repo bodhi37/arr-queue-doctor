@@ -81,7 +81,7 @@ Most people never change these. Copy `.env.example` if you need to.
 | `ARR_QUEUE_DOCTOR_STALL_TIMEOUT` | Give up on a zero-progress download after this (seconds) | `5400` (90 min) |
 | `ARR_QUEUE_DOCTOR_HTTP_TIMEOUT` | Give up on a single request to Sonarr/Radarr/qBittorrent after this (seconds) | `90` |
 | `ARR_QUEUE_DOCTOR_MAX_RECOVERIES` | Most items fixed per run | `2` |
-| `ARR_QUEUE_DOCTOR_SKIP_TAGS` | Leave downloads with these qBittorrent labels alone | `route_error,route_import_failed,route_overcommit,route_waiting_space` (empty = fix everything stuck) |
+| `ARR_QUEUE_DOCTOR_SKIP_TAGS` | Leave stalled downloads with these qBittorrent labels alone | `route_error,route_import_failed,route_overcommit,route_waiting_space` (empty = fix everything stuck; unsafe or non-video payloads are always cleaned regardless of labels) |
 | `ARR_QUEUE_DOCTOR_DRY_RUN` | `1` = log only, change nothing | `0` |
 | `ARR_QUEUE_DOCTOR_LOG` | Where the fix log lives | `/var/lib/arr-queue-doctor/recovery-events.jsonl` |
 
