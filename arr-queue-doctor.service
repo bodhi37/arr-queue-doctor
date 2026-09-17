@@ -1,0 +1,43 @@
+[Unit]
+Description=Recover stale Sonarr/Radarr queue items and re-search replacements
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/arr-queue-doctor.py
+User=root
+Group=root
+UMask=0077
+# Event log goes here. Override with ARR_QUEUE_DOCTOR_LOG if needed.
+StateDirectory=arr-queue-doctor
+StateDirectoryMode=0700
+Environment=ARR_QUEUE_DOCTOR_LOG=/var/lib/arr-queue-doctor/recovery-events.jsonl
+Environment=ARR_QUEUE_DOCTOR_META_TIMEOUT=1800
+Environment=ARR_QUEUE_DOCTOR_STALL_TIMEOUT=5400
+Environment=ARR_QUEUE_DOCTOR_MAX_RECOVERIES=2
+# Uncomment and point at your Arr hosts if they are not on loopback:
+# Environment=SONARR_URL=http://127.0.0.1:8989/api/v3
+# Environment=RADARR_URL=http://127.0.0.1:7878/api/v3
+# Environment=QBIT_URL=http://127.0.0.1:8080/api/v2
+# Prefer API keys via a systemd credential or override file. If unset, the
+# script reads config.xml instead:
+# Environment=SONARR_CONFIG=/var/lib/sonarr/config.xml
+# Environment=RADARR_CONFIG=/var/lib/radarr/config.xml
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/arr-queue-doctor
+# If your Arr config.xml files live outside /var/lib, allow reading them, e.g.:
+# ReadOnlyPaths=/mnt/drive-a/configs/sonarr/config.xml /mnt/drive-a/configs/radarr/config.xml
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+TimeoutStartSec=10min
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target
