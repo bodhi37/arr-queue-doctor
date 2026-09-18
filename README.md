@@ -6,8 +6,6 @@ If you run Sonarr and Radarr with qBittorrent, you know the problem: a download 
 
 ## What it does
 
-It has one simple job, every 15 minutes:
-
 1. **Finds the stuck ones.** Downloads waiting too long with no progress, or finished files that aren't videos.
 2. **Throws out the bad egg.** Removes it from Sonarr/Radarr and blocks it so the same bad file isn't grabbed again.
 3. **Gets a better release.** Picks the healthiest replacement it can already see, or starts a fresh search if there's nothing good.
@@ -72,15 +70,3 @@ Most people never change these. Copy `.env.example` if you need to.
 | `ARR_QUEUE_DOCTOR_SKIP_TAGS` | Leave stalled downloads with these qBittorrent labels alone | `route_error,route_import_failed,route_overcommit,route_waiting_space` (empty = fix everything stuck; unsafe or non-video payloads are always cleaned regardless of labels) |
 | `ARR_QUEUE_DOCTOR_DRY_RUN` | `1` = log only, change nothing | `0` |
 | `ARR_QUEUE_DOCTOR_LOG` | Where the fix log lives | `/var/lib/arr-queue-doctor/recovery-events.jsonl` |
-
-## Files
-
-```text
-arr-queue-doctor.py            # the doctor, Python stdlib only
-arr-queue-doctor.service       # runs it
-arr-queue-doctor.timer         # every 15 minutes
-.env.example                   # all settings with examples
-recovery-events.jsonl.example  # what the log looks like (fake data)
-```
-
-License: MIT. See `LICENSE`.
