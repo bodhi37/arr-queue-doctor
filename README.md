@@ -2,13 +2,11 @@
 
 Cleans up stuck TV and movie downloads so you don't have to.
 
-If you run Sonarr and Radarr with qBittorrent, you know the problem: a download sits at 0% for ages, has no seeders/peers, or isnt even a video file sometimes (I've had Sonarr download .exe files.). Normally you'd have to find it, delete it, block it, and search for a replacement by hand. This does that for you.
+If you run Sonarr and Radarr with qBittorrent, you know the problem: a download sits at 0% for ages, has no seeders/peers, or Sonarr/Radarr accidentally picked up a non-video file. Normally you'd have to find it, delete it, and search for a replacement by hand. This does that for you.
 
 ## What it does
 
-1. **Finds the stuck ones.** Downloads waiting too long with no progress, or finished files that aren't videos.
-2. **Throws out the bad egg.** Removes it from Sonarr/Radarr and blocks it so the same bad file isn't grabbed again.
-3. **Gets a better release.** Picks the healthiest replacement it can already see, or starts a fresh search if there's nothing good.
+It finds stuck or unhealthy downloads, deletes them and grabs a better release. That's it.
 
 ## What you need
 
